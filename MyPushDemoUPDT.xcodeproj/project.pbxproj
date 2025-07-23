@@ -30,16 +30,70 @@
 		46B0A5092E3187A500D68D28 /* FirebaseRemoteConfig in Frameworks */ = {isa = PBXBuildFile; productRef = 46B0A5082E3187A500D68D28 /* FirebaseRemoteConfig */; };
 		46B0A50B2E3187A500D68D28 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 46B0A50A2E3187A500D68D28 /* FirebaseStorage */; };
 		46B0A50D2E3187A500D68D28 /* FirebaseStorageCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 46B0A50C2E3187A500D68D28 /* FirebaseStorageCombine-Community */; };
+		46B0A51C2E31943E00D68D28 /* NotificationService.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 46B0A5152E31943E00D68D28 /* NotificationService.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		46B0A51A2E31943E00D68D28 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 46B0A4C62E3183F000D68D28 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 46B0A5142E31943E00D68D28;
+			remoteInfo = NotificationService;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		46B0A5212E31943E00D68D28 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				46B0A51C2E31943E00D68D28 /* NotificationService.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		46B0A4CE2E3183F000D68D28 /* MyPushDemoUPDT.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyPushDemoUPDT.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		46B0A5152E31943E00D68D28 /* NotificationService.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = NotificationService.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		46B0A5102E3193CE00D68D28 /* Exceptions for "MyPushDemoUPDT" folder in "MyPushDemoUPDT" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 46B0A4CD2E3183F000D68D28 /* MyPushDemoUPDT */;
+		};
+		46B0A5202E31943E00D68D28 /* Exceptions for "NotificationService" folder in "NotificationService" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 46B0A5142E31943E00D68D28 /* NotificationService */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		46B0A4D02E3183F000D68D28 /* MyPushDemoUPDT */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				46B0A5102E3193CE00D68D28 /* Exceptions for "MyPushDemoUPDT" folder in "MyPushDemoUPDT" target */,
+			);
 			path = MyPushDemoUPDT;
+			sourceTree = "<group>";
+		};
+		46B0A5162E31943E00D68D28 /* NotificationService */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				46B0A5202E31943E00D68D28 /* Exceptions for "NotificationService" folder in "NotificationService" target */,
+			);
+			path = NotificationService;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -75,6 +129,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		46B0A5122E31943E00D68D28 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -82,6 +143,7 @@
 			isa = PBXGroup;
 			children = (
 				46B0A4D02E3183F000D68D28 /* MyPushDemoUPDT */,
+				46B0A5162E31943E00D68D28 /* NotificationService */,
 				46B0A4DF2E3187A500D68D28 /* Frameworks */,
 				46B0A4CF2E3183F000D68D28 /* Products */,
 			);
@@ -91,6 +153,7 @@
 			isa = PBXGroup;
 			children = (
 				46B0A4CE2E3183F000D68D28 /* MyPushDemoUPDT.app */,
+				46B0A5152E31943E00D68D28 /* NotificationService.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -112,10 +175,12 @@
 				46B0A4CA2E3183F000D68D28 /* Sources */,
 				46B0A4CB2E3183F000D68D28 /* Frameworks */,
 				46B0A4CC2E3183F000D68D28 /* Resources */,
+				46B0A5212E31943E00D68D28 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				46B0A51B2E31943E00D68D28 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				46B0A4D02E3183F000D68D28 /* MyPushDemoUPDT */,
@@ -150,6 +215,28 @@
 			productReference = 46B0A4CE2E3183F000D68D28 /* MyPushDemoUPDT.app */;
 			productType = "com.apple.product-type.application";
 		};
+		46B0A5142E31943E00D68D28 /* NotificationService */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 46B0A51D2E31943E00D68D28 /* Build configuration list for PBXNativeTarget "NotificationService" */;
+			buildPhases = (
+				46B0A5112E31943E00D68D28 /* Sources */,
+				46B0A5122E31943E00D68D28 /* Frameworks */,
+				46B0A5132E31943E00D68D28 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				46B0A5162E31943E00D68D28 /* NotificationService */,
+			);
+			name = NotificationService;
+			packageProductDependencies = (
+			);
+			productName = NotificationService;
+			productReference = 46B0A5152E31943E00D68D28 /* NotificationService.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -161,6 +248,9 @@
 				LastUpgradeCheck = 1630;
 				TargetAttributes = {
 					46B0A4CD2E3183F000D68D28 = {
+						CreatedOnToolsVersion = 16.3;
+					};
+					46B0A5142E31943E00D68D28 = {
 						CreatedOnToolsVersion = 16.3;
 					};
 				};
@@ -183,12 +273,20 @@
 			projectRoot = "";
 			targets = (
 				46B0A4CD2E3183F000D68D28 /* MyPushDemoUPDT */,
+				46B0A5142E31943E00D68D28 /* NotificationService */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		46B0A4CC2E3183F000D68D28 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		46B0A5132E31943E00D68D28 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -205,7 +303,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		46B0A5112E31943E00D68D28 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		46B0A51B2E31943E00D68D28 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 46B0A5142E31943E00D68D28 /* NotificationService */;
+			targetProxy = 46B0A51A2E31943E00D68D28 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		46B0A4D72E3183F200D68D28 /* Debug */ = {
@@ -340,6 +453,7 @@
 				DEVELOPMENT_TEAM = MZ552MTEJZ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = MyPushDemoUPDT/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -369,6 +483,7 @@
 				DEVELOPMENT_TEAM = MZ552MTEJZ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = MyPushDemoUPDT/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -381,6 +496,56 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.dia.MyPushDemoUPDT;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		46B0A51E2E31943E00D68D28 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = MZ552MTEJZ;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = NotificationService/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = NotificationService;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dia.MyPushDemoUPDT.NotificationService;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		46B0A51F2E31943E00D68D28 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = MZ552MTEJZ;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = NotificationService/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = NotificationService;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dia.MyPushDemoUPDT.NotificationService;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -404,6 +569,15 @@
 			buildConfigurations = (
 				46B0A4DA2E3183F200D68D28 /* Debug */,
 				46B0A4DB2E3183F200D68D28 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		46B0A51D2E31943E00D68D28 /* Build configuration list for PBXNativeTarget "NotificationService" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				46B0A51E2E31943E00D68D28 /* Debug */,
+				46B0A51F2E31943E00D68D28 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
