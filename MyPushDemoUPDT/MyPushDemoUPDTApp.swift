@@ -21,6 +21,9 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
 
         Messaging.messaging().delegate = self
         UNUserNotificationCenter.current().delegate = self
+        
+        // Set up notification categories with interactive actions
+        setupNotificationCategories()
 
         // Check current authorization status
         UNUserNotificationCenter.current().getNotificationSettings { settings in
@@ -54,6 +57,67 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
         }
 
         return true
+    }
+    
+    private func setupNotificationCategories() {
+        // Define individual actions (buttons)
+        let acceptAction = UNNotificationAction(
+            identifier: "ACCEPT_ACTION",
+            title: "Accept",
+            options: [.foreground] // Opens the app when tapped
+        )
+        
+        let declineAction = UNNotificationAction(
+            identifier: "DECLINE_ACTION",
+            title: "Decline",
+            options: [] // Doesn't open the app
+        )
+        
+        let viewAction = UNNotificationAction(
+            identifier: "VIEW_ACTION",
+            title: "View Details",
+            options: [.foreground]
+        )
+        
+        let replyAction = UNTextInputNotificationAction(
+            identifier: "REPLY_ACTION",
+            title: "Reply",
+            options: [.foreground],
+            textInputButtonTitle: "Send",
+            textInputPlaceholder: "Type your reply..."
+        )
+
+        // Create categories (groups of actions)
+        let inviteCategory = UNNotificationCategory(
+            identifier: "INVITE_CATEGORY",
+            actions: [acceptAction, declineAction],
+            intentIdentifiers: [],
+            options: []
+        )
+        
+        let messageCategory = UNNotificationCategory(
+            identifier: "MESSAGE_CATEGORY",
+            actions: [replyAction, viewAction],
+            intentIdentifiers: [],
+            options: []
+        )
+        
+        let alertCategory = UNNotificationCategory(
+            identifier: "ALERT_CATEGORY",
+            actions: [viewAction],
+            intentIdentifiers: [],
+            options: []
+        )
+
+        // Register all categories
+        let categories: Set<UNNotificationCategory> = [
+            inviteCategory,
+            messageCategory,
+            alertCategory
+        ]
+        
+        UNUserNotificationCenter.current().setNotificationCategories(categories)
+        print("📱 Notification categories registered successfully")
     }
 
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
@@ -99,13 +163,15 @@ extension AppDelegate: MessagingDelegate {
     }
 }
 
+// Update your UNUserNotificationCenterDelegate extension in AppDelegate.swift
+
 extension AppDelegate: UNUserNotificationCenterDelegate {
     func userNotificationCenter(
         _: UNUserNotificationCenter,
         willPresent _: UNNotification,
         withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void
     ) {
-        completionHandler([.banner, .list, .sound])
+        completionHandler([[.banner, .list, .sound]])
     }
 
     func userNotificationCenter(
@@ -114,14 +180,143 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         withCompletionHandler completionHandler: @escaping () -> Void
     ) {
         let userInfo = response.notification.request.content.userInfo
+        let actionIdentifier = response.actionIdentifier
+        
+        print("🔔 Notification action tapped: \(actionIdentifier)")
+        
+        // Handle different button actions
+        switch actionIdentifier {
+        case "ACCEPT_ACTION":
+            print("✅ User accepted the invite")
+            handleAcceptAction(userInfo: userInfo)
+            
+        case "DECLINE_ACTION":
+            print("❌ User declined the invite")
+            handleDeclineAction(userInfo: userInfo)
+            
+        case "VIEW_ACTION":
+            print("👀 User wants to view details")
+            handleViewAction(userInfo: userInfo)
+            
+        case "REPLY_ACTION":
+            if let textResponse = response as? UNTextInputNotificationResponse {
+                print("💬 User replied: \(textResponse.userText)")
+                handleReplyAction(userInfo: userInfo, replyText: textResponse.userText)
+            }
+            
+        case UNNotificationDefaultActionIdentifier:
+            print("📱 User tapped the notification (not a button)")
+            handleDefaultAction(userInfo: userInfo)
+            
+        default:
+            print("🤷‍♂️ Unknown action: \(actionIdentifier)")
+        }
+        
+        // Post notification for app to handle
         NotificationCenter.default.post(
             name: Notification.Name("didReceiveRemoteNotification"),
             object: nil,
             userInfo: userInfo
         )
+        
         completionHandler()
     }
+    
+    // Handle specific actions
+    private func handleAcceptAction(userInfo: [AnyHashable: Any]) {
+        // Do something when user accepts
+        // Maybe call an API, update UI, etc.
+        print("Processing accept action...")
+    }
+    
+    private func handleDeclineAction(userInfo: [AnyHashable: Any]) {
+        // Do something when user declines
+        print("Processing decline action...")
+    }
+    
+    private func handleViewAction(userInfo: [AnyHashable: Any]) {
+        // Navigate to specific screen
+        print("Opening details view...")
+    }
+    
+    private func handleReplyAction(userInfo: [AnyHashable: Any], replyText: String) {
+        // Send the reply somewhere
+        print("Sending reply: \(replyText)")
+    }
+    
+    private func handleDefaultAction(userInfo: [AnyHashable: Any]) {
+        // Handle normal notification tap
+        print("Opening app from notification tap...")
+    }
 }
+
+//extension AppDelegate: UNUserNotificationCenterDelegate {
+//    func userNotificationCenter(
+//        _: UNUserNotificationCenter,
+//        willPresent _: UNNotification,
+//        withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void
+//    ) {
+//        completionHandler([.banner, .list, .sound])
+//    }
+//
+//    func userNotificationCenter(
+//        _: UNUserNotificationCenter,
+//        didReceive response: UNNotificationResponse,
+//        withCompletionHandler completionHandler: @escaping () -> Void
+//    ) {
+//        let userInfo = response.notification.request.content.userInfo
+//        
+//        // Handle the interactive button actions
+//        switch response.actionIdentifier {
+//        case "ACCEPT_ACTION":
+//            print("✅ Accept button tapped!")
+//            // Handle accept action - maybe update some data or navigate somewhere
+//            NotificationCenter.default.post(
+//                name: Notification.Name("acceptButtonTapped"),
+//                object: nil,
+//                userInfo: userInfo
+//            )
+//            
+//        case "DECLINE_ACTION":
+//            print("❌ Decline button tapped!")
+//            // Handle decline action
+//            NotificationCenter.default.post(
+//                name: Notification.Name("declineButtonTapped"),
+//                object: nil,
+//                userInfo: userInfo
+//            )
+//            
+//        case "VIEW_ACTION":
+//            print("👀 View Details button tapped!")
+//            // Handle view action - maybe navigate to a specific screen
+//            NotificationCenter.default.post(
+//                name: Notification.Name("viewDetailsButtonTapped"),
+//                object: nil,
+//                userInfo: userInfo
+//            )
+//            
+//        case "DELETE_ACTION":
+//            print("🗑️ Delete button tapped!")
+//            // Handle delete action
+//            NotificationCenter.default.post(
+//                name: Notification.Name("deleteButtonTapped"),
+//                object: nil,
+//                userInfo: userInfo
+//            )
+//            
+//        default:
+//            print("📱 Default notification tap")
+//            // Handle regular notification tap
+//            NotificationCenter.default.post(
+//                name: Notification.Name("didReceiveRemoteNotification"),
+//                object: nil,
+//                userInfo: userInfo
+//            )
+//        }
+//        
+//        completionHandler()
+//    }
+//}
 
 @main
 struct CloudMessagingIosApp: App {

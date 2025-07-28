@@ -77,10 +77,51 @@ struct ContentView: View {
             .foregroundColor(.white)
             .cornerRadius(10)
             .disabled(fcmToken.isEmpty)
+            
+            Button("Test Notification with Buttons") {
+                sendNotificationWithButtons()
+            }
+            .padding()
+            .background(Color.purple)
+            .foregroundColor(.white)
+            .cornerRadius(10)
+
+            Button("Debug App Icons") {
+                debugAppIcons()
+            }
+            .padding()
+            .background(Color.blue)
+            .foregroundColor(.white)
+            .cornerRadius(10)
+
         }
         .padding()
         .onAppear {
             getFCMToken()
+        }
+    }
+    
+    private func sendNotificationWithButtons() {
+        let content = UNMutableNotificationContent()
+        content.title = "Meeting Invitation"
+        content.body = "You're invited to join the team meeting at 3 PM"
+        content.userInfo = [
+            "image": "https://picsum.photos/300/200.jpg",
+            "meeting_id": "12345",
+            "type": "invite"
+        ]
+        
+        content.categoryIdentifier = "INVITE_CATEGORY"
+        
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 3, repeats: false)
+        let request = UNNotificationRequest(identifier: "test-buttons", content: content, trigger: trigger)
+        
+        UNUserNotificationCenter.current().add(request) { error in
+            if let error = error {
+                print("Error: \(error)")
+            } else {
+                print("Test notification with buttons scheduled!")
+            }
         }
     }
     
@@ -90,7 +131,6 @@ struct ContentView: View {
         content.body = "This should show an image!"
         content.userInfo = ["image": "https://picsum.photos/300/200.jpg"]
         
-        // This triggers the Notification Service Extension
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 2, repeats: false)
         let request = UNNotificationRequest(identifier: "test", content: content, trigger: trigger)
         
@@ -102,19 +142,18 @@ struct ContentView: View {
     }
     
     private func forceCheckAPNsRegistration() {
-        print("🔍 Checking APNs registration status...")
+        print("Checking APNs registration status...")
         
         UIApplication.shared.registerForRemoteNotifications()
         
-        // Check if we can get the APNs token from Firebase Messaging
         if let apnsToken = Messaging.messaging().apnsToken {
             let hexString = apnsToken.map { String(format: "%02.2hhx", $0) }.joined()
-            print("📱 Found APNs token in Firebase: \(hexString)")
+            print("Found APNs token in Firebase: \(hexString)")
             DispatchQueue.main.async {
                 self.apnsToken = hexString
             }
         } else {
-            print("❌ No APNs token found in Firebase Messaging")
+            print("No APNs token found in Firebase Messaging")
         }
     }
     
@@ -127,7 +166,6 @@ struct ContentView: View {
                 DispatchQueue.main.async {
                     self.fcmToken = token
                 }
-                // Copy to clipboard for easy testing
                 UIPasteboard.general.string = token
             }
         }
@@ -136,7 +174,6 @@ struct ContentView: View {
     private func sendTestFCM() {
         guard !fcmToken.isEmpty else { return }
         
-        // This is just for demonstration - in a real app, you'd send this from your server
         let payload = """
         {
           "message": {
@@ -166,7 +203,6 @@ struct ContentView: View {
         print("Use this payload to test FCM:")
         print(payload)
         
-        // You can use this payload with curl or Postman to test:
         let curlCommand = """
         curl -X POST https://fcm.googleapis.com/v1/projects/YOUR_PROJECT_ID/messages:send \\
         -H "Authorization: Bearer YOUR_ACCESS_TOKEN" \\
@@ -177,6 +213,41 @@ struct ContentView: View {
         print("Curl command (replace YOUR_PROJECT_ID and YOUR_ACCESS_TOKEN):")
         print(curlCommand)
     }
+    
+    private func debugAppIcons() {
+        print("DEBUGGING APP ICONS")
+        
+        if let bundlePath = Bundle.main.path(forResource: "AppIcon60x60", ofType: "png") {
+            print("Found AppIcon60x60.png at: \(bundlePath)")
+        } else {
+            print("AppIcon60x60.png not found in bundle")
+        }
+        
+        let iconSizes = ["20", "29", "40", "58", "60", "80", "87", "120", "180"]
+        for size in iconSizes {
+            if let image = UIImage(named: "AppIcon\(size)x\(size)") {
+                print("Found AppIcon\(size)x\(size): \(image.size)")
+            } else {
+                print("AppIcon\(size)x\(size) not found")
+            }
+        }
+        
+        if let infoDictionary = Bundle.main.infoDictionary {
+            print("Bundle identifier: \(infoDictionary["CFBundleIdentifier"] ?? "unknown")")
+            print("Bundle name: \(infoDictionary["CFBundleName"] ?? "unknown")")
+            if let iconFiles = infoDictionary["CFBundleIcons"] as? [String: Any] {
+                print("Icon files in Info.plist: \(iconFiles)")
+            }
+        }
+        
+        UNUserNotificationCenter.current().getNotificationSettings { settings in
+            DispatchQueue.main.async {
+                print("Notification authorization: \(settings.authorizationStatus.rawValue)")
+                print("Alert setting: \(settings.alertSetting.rawValue)")
+            }
+        }
+    }
+
 }
 
 #Preview {
