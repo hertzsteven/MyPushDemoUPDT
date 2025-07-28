@@ -58,7 +58,6 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
 
         return true
     }
-    
     private func setupNotificationCategories() {
         // Define individual actions (buttons)
         let acceptAction = UNNotificationAction(
@@ -87,6 +86,25 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
             textInputPlaceholder: "Type your reply..."
         )
 
+        // NEW: Add donation action buttons
+        let donate25Action = UNNotificationAction(
+            identifier: "DONATE_25",
+            title: "Donate $25",
+            options: [.foreground]
+        )
+
+        let donate50Action = UNNotificationAction(
+            identifier: "DONATE_50",
+            title: "Donate $50",
+            options: [.foreground]
+        )
+        
+        let learnMoreAction = UNNotificationAction(
+            identifier: "LEARN_MORE",
+            title: "Learn More",
+            options: [.foreground]
+        )
+
         // Create categories (groups of actions)
         let inviteCategory = UNNotificationCategory(
             identifier: "INVITE_CATEGORY",
@@ -109,16 +127,85 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
             options: []
         )
 
-        // Register all categories
+        // NEW: Create donation category
+        let donationCategory = UNNotificationCategory(
+            identifier: "DONATION_CATEGORY",
+            actions: [donate25Action, donate50Action, learnMoreAction],
+            intentIdentifiers: [],
+            options: []
+        )
+
+        // Register all categories (including the new donation category)
         let categories: Set<UNNotificationCategory> = [
             inviteCategory,
             messageCategory,
-            alertCategory
+            alertCategory,
+            donationCategory  // Add this line
         ]
         
         UNUserNotificationCenter.current().setNotificationCategories(categories)
         print("📱 Notification categories registered successfully")
     }
+//    private func setupNotificationCategories() {
+//        // Define individual actions (buttons)
+//        let acceptAction = UNNotificationAction(
+//            identifier: "ACCEPT_ACTION",
+//            title: "Accept",
+//            options: [.foreground] // Opens the app when tapped
+//        )
+//        
+//        let declineAction = UNNotificationAction(
+//            identifier: "DECLINE_ACTION",
+//            title: "Decline",
+//            options: [] // Doesn't open the app
+//        )
+//        
+//        let viewAction = UNNotificationAction(
+//            identifier: "VIEW_ACTION",
+//            title: "View Details",
+//            options: [.foreground]
+//        )
+//        
+//        let replyAction = UNTextInputNotificationAction(
+//            identifier: "REPLY_ACTION",
+//            title: "Reply",
+//            options: [.foreground],
+//            textInputButtonTitle: "Send",
+//            textInputPlaceholder: "Type your reply..."
+//        )
+//
+//        // Create categories (groups of actions)
+//        let inviteCategory = UNNotificationCategory(
+//            identifier: "INVITE_CATEGORY",
+//            actions: [acceptAction, declineAction],
+//            intentIdentifiers: [],
+//            options: []
+//        )
+//        
+//        let messageCategory = UNNotificationCategory(
+//            identifier: "MESSAGE_CATEGORY",
+//            actions: [replyAction, viewAction],
+//            intentIdentifiers: [],
+//            options: []
+//        )
+//        
+//        let alertCategory = UNNotificationCategory(
+//            identifier: "ALERT_CATEGORY",
+//            actions: [viewAction],
+//            intentIdentifiers: [],
+//            options: []
+//        )
+//
+//        // Register all categories
+//        let categories: Set<UNNotificationCategory> = [
+//            inviteCategory,
+//            messageCategory,
+//            alertCategory
+//        ]
+//        
+//        UNUserNotificationCenter.current().setNotificationCategories(categories)
+//        print("📱 Notification categories registered successfully")
+//    }
 
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
         print("❌❌❌ FAILED to register for remote notifications!")
@@ -203,6 +290,19 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
                 print("💬 User replied: \(textResponse.userText)")
                 handleReplyAction(userInfo: userInfo, replyText: textResponse.userText)
             }
+            // Add these cases to your existing switch statement in userNotificationCenter didReceive response
+            
+        case "DONATE_25":
+            print("💰 User wants to donate $25")
+            handleDonateAction(userInfo: userInfo, amount: 25)
+            
+        case "DONATE_50":
+            print("💰 User wants to donate $50")
+            handleDonateAction(userInfo: userInfo, amount: 50)
+            
+        case "LEARN_MORE":
+            print("📖 User wants to learn more")
+            handleLearnMoreAction(userInfo: userInfo)
             
         case UNNotificationDefaultActionIdentifier:
             print("📱 User tapped the notification (not a button)")
@@ -247,6 +347,47 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     private func handleDefaultAction(userInfo: [AnyHashable: Any]) {
         // Handle normal notification tap
         print("Opening app from notification tap...")
+    }
+    // Add these functions after your existing handler functions in the AppDelegate extension
+
+    private func handleDonateAction(userInfo: [AnyHashable: Any], amount: Int) {
+        print("Processing donation of $\(amount)...")
+        
+        // Extract campaign info from the notification
+        if let campaignId = userInfo["campaign_id"] as? String {
+            print("Campaign ID: \(campaignId)")
+        }
+        
+        if let donationUrl = userInfo["donation_url"] as? String {
+            print("Donation URL: \(donationUrl)")
+            // Here you could open the donation URL or trigger in-app donation flow
+        }
+        
+        // Post notification for the app to handle
+        NotificationCenter.default.post(
+            name: Notification.Name("donateButtonTapped"),
+            object: nil,
+            userInfo: [
+                "amount": amount,
+                "originalNotification": userInfo
+            ]
+        )
+        
+        // You could also trigger immediate donation flow here
+        // For example: triggerDonationFlow(amount: amount, campaignId: campaignId)
+    }
+
+    private func handleLearnMoreAction(userInfo: [AnyHashable: Any]) {
+        print("Processing learn more action...")
+        
+        // Post notification for the app to handle
+        NotificationCenter.default.post(
+            name: Notification.Name("learnMoreButtonTapped"),
+            object: nil,
+            userInfo: userInfo
+        )
+        
+        // You could navigate to specific content here
     }
 }
 
